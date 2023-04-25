@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.OrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.Order" >
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="user_id" jdbcType="BIGINT"/>
+        <result column="order_status" property="order_status" jdbcType="INTEGER"/>
+        <result column="pay_status" property="pay_status" jdbcType="INTEGER"/>
+        <result column="shipping_status" property="shipping_status" jdbcType="INTEGER"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="consignee" property="consignee" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goods_id" jdbcType="BIGINT"/>
+        <result column="goods_number" property="goods_number" jdbcType="INTEGER"/>
+        <result column="goods_price" property="goods_price" jdbcType="DECIMAL"/>
+        <result column="goods_amount" property="goods_amount" jdbcType="DECIMAL"/>
+        <result column="shipping_fee" property="shipping_fee" jdbcType="DECIMAL"/>
+        <result column="order_amount" property="order_amount" jdbcType="DECIMAL"/>
+        <result column="coupon_id" property="coupon_id" jdbcType="DECIMAL"/>
+        <result column="money_paid" property="money_paid" jdbcType="DECIMAL"/>
+        <result column="pay_amount" property="pay_amount" jdbcType="DECIMAL"/>
+        <result column="add_time" property="add_time" jdbcType="TIMESTAMP"/>
+        <result column="confirm_time" property="confirm_time" jdbcType="TIMESTAMP"/>
+        <result column="pay_time" property="pay_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="findAll"  resultMap="BaseResultMap">
+        select * from order
+    </select>
+
+    <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.Order">
+        select * from order where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.Order">
+        insert into order (id,user_id,order_status,pay_status,shipping_status,address,consignee,
+            goods_id,goods_number,goods_price,goods_amount,shipping_fee,order_amount,coupon_id,money_paid
+            pay_amount,add_time,confirm_time,pay_time)
+         values (#{order.id},#{order.user_id},#{order.order_status},#{order.pay_status},#{order.shipping_status},#{order.address},#{order.consignee},
+            #{order.goods_id},#{order.goods_number},#{order.goods_price},#{order.goods_amount},#{order.shipping_fee},#{order.order_amount},#{order.coupon_id},#{order.money_paid}
+            #{order.pay_amount},#{order.add_time},#{order.confirm_time},#{order.pay_time})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.Order">
+        update order set user_id=#{order.user_id},
+        order_status=#{order.order_status},
+        pay_status=#{order.pay_status},
+        shipping_status=#{order.shipping_status},
+        address=#{order.address},
+        consignee=#{order.consignee},
+        goods_id=#{order.goods_id},
+        goods_number=#{order.goods_number},
+        goods_price=#{order.goods_price},
+        goods_amount=#{order.goods_amount},
+        shipping_fee=#{order.shipping_fee},
+        order_amount=#{order.order_amount},
+        coupon_id=#{order.coupon_id},
+        money_paid=#{order.money_paid},
+        pay_amount=#{order.pay_amount},
+        add_time=#{order.add_time},
+        confirm_time=#{order.confirm_time},
+        pay_time=#{order.pay_time},
+        where id=#{order.id}
+    </update>
+
+    <select id="findMaxId"  resultType="java.math.BigInteger">
+        select ifnull(max(id),1) id from order
+    </select>
+
+</mapper>

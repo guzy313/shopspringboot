@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.CouponMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.Coupon" >
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="coupon_price" property="coupon_price" jdbcType="DECIMAL"/>
+        <result column="user_id" property="user_id" jdbcType="DECIMAL"/>
+        <result column="order_id" property="order_id" jdbcType="BIGINT"/>
+        <result column="is_used" property="is_used" jdbcType="INTEGER"/>
+        <result column="used_time" property="used_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from coupon
+    </select>
+
+    <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.Coupon">
+        select * from coupon where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.Coupon">
+        insert into coupon (id,coupon_price,user_id,order_id,is_used,used_time)
+         values (#{coupon.id},#{coupon.coupon_price},#{coupon.user_id},#{coupon.order_id},#{coupon.is_used},#{coupon.used_time})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.Coupon">
+        update goods set coupon_price = #{coupon.coupon_price},
+        user_id=#{coupon.user_id},
+        order_id=#{coupon.order_id},
+        is_used=#{coupon.is_used},
+        used_time=#{coupon.used_time}
+        where id=#{coupon.id}
+    </update>
+
+    <select id="findMaxId"  resultType="java.math.BigInteger">
+        select ifnull(max(id),1) id from coupon
+    </select>
+
+</mapper>

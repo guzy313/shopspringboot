@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.UserBalanceLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.UserBalanceLog" >
+        <result column="user_id" property="user_id" jdbcType="DECIMAL"/>
+        <result column="order_id" property="order_id" jdbcType="VARCHAR"/>
+        <result column="money_log_type" property="money_log_type" jdbcType="VARCHAR"/>
+        <result column="use_money" property="use_money" jdbcType="VARCHAR"/>
+        <result column="create_time" property="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="findAll"  resultMap="BaseResultMap">
+        select * from user_balance_log
+    </select>
+
+    <select id="findByOrderIdAndUserId" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.UserBalanceLog">
+        select * from user_balance_log where order_id = #{orderId} and user_id = #{userId}
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.UserBalanceLog">
+        insert into user_balance_log (id,user_id,order_id,money_log_type,use_money,create_time)
+         values (#{userBalanceLog.id},#{userBalanceLog.user_id},#{userBalanceLog.order_id},#{userBalanceLog.money_log_type},#{userBalanceLog.use_money},#{user.create_time})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.UserBalanceLog">
+        update user_balance_log set user_id=#{userBalanceLog.user_id},
+        order_id=#{userBalanceLog.order_id},
+        money_log_type=#{userBalanceLog.money_log_type},
+        use_money=#{userBalanceLog.use_money},
+        create_time=#{userBalanceLog.create_time}
+        where id=#{userBalanceLog.id}
+    </update>
+
+    <select id="findMaxId"  resultType="java.math.BigInteger">
+        select ifnull(max(id),1) id from user_balance_log
+    </select>
+
+</mapper>

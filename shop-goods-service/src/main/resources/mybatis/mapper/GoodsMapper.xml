@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.GoodsMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.Goods" >
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="goods_name" property="goods_name" jdbcType="VARCHAR"/>
+        <result column="goods_number" property="goods_number" jdbcType="INTEGER"/>
+        <result column="goods_price" property="goods_price" jdbcType="DECIMAL"/>
+        <result column="goods_desc" property="goods_desc" jdbcType="VARCHAR"/>
+        <result column="add_time" property="add_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from goods
+    </select>
+
+    <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.Goods">
+        select * from goods where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.Goods">
+        insert into goods (id,goods_name,goods_number,goods_price,goods_desc,add_time)
+         values (#{goods.id},#{goods.goods_name},#{goods.goods_number},#{goods.goods_price},#{goods.goods_desc},#{goods.add_time})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.Goods">
+        update goods set goods_name = #{goods.goods_name},
+        goods_number=#{goods.goods_number},
+        goods_price=#{goods.goods_price},
+        goods_desc=#{goods.goods_desc},
+        add_time=#{goods.add_time}
+        where id=#{goods.id}
+    </update>
+
+    <select id="findMaxId"  resultType="java.math.BigInteger">
+        select ifnull(max(id),1) id from goods
+    </select>
+
+</mapper>

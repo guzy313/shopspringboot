@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.User" >
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="user_name" jdbcType="DECIMAL"/>
+        <result column="user_password" property="user_password" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="user_phone" jdbcType="VARCHAR"/>
+        <result column="user_score" property="user_score" jdbcType="VARCHAR"/>
+        <result column="user_reg_time" property="user_reg_time" jdbcType="TIMESTAMP"/>
+        <result column="user_money" property="user_money" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="findAll"  resultMap="BaseResultMap">
+        select * from user
+    </select>
+
+    <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.User">
+        select * from user where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.User">
+        insert into user (id,user_name,user_password,user_phone,user_score,user_reg_time,user_money)
+         values (#{user.id},#{user.user_name},#{user.user_password},#{user.user_phone},#{user.user_score},#{user.user_reg_time},#{user.user_money})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.User">
+        update user set user_name = #{user.user_name},
+        user_password=#{user.user_password},
+        user_phone=#{user.user_phone},
+        user_score=#{user.user_score},
+        user_reg_time=#{user.user_reg_time},
+        user_money=#{user.user_money}
+        where id=#{user.id}
+    </update>
+
+    <select id="findMaxId"  resultType="java.math.BigInteger">
+        select ifnull(max(id),1) id from user
+    </select>
+
+</mapper>

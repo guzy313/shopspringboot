@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.GoodsLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.GoodsLog" >
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="goods_id" property="goods_id" jdbcType="BIGINT"/>
+        <result column="order_id" property="order_id" jdbcType="BIGINT"/>
+        <result column="goods_number" property="goods_number" jdbcType="INTEGER"/>
+        <result column="log_time" property="log_time" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from goods_log
+    </select>
+
+    <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.GoodsLog">
+        select * from goods_log where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.GoodsLog">
+        insert into goods_log (id,goods_id,order_id,goods_number,log_time)
+         values (#{goodsLog.id},#{goodsLog.goods_id},#{goodsLog.order_id},#{goodsLog.goods_number},#{goodsLog.log_time})
+    </insert>
+
+    <select id="findMaxId"  resultType="java.math.BigInteger">
+        select ifnull(max(id),1) id from goods_log
+    </select>
+
+</mapper>
