@@ -39,7 +39,7 @@ public class UserController {
      */
     @PostMapping("/user/createUser")
     @ResponseBody
-    public CommonResult createUser(@RequestParam("user") User user){
+    public CommonResult createUser(@RequestBody User user){
         userService.createUser(user);
         return new CommonResult(200,"创建用户成功", ShopCode.SHOP_USER_CREATE_SUCCESS);
     }
@@ -50,7 +50,7 @@ public class UserController {
      */
     @PostMapping("user/updateUser")
     @ResponseBody
-    public CommonResult updateUser(@RequestParam("user") User user){
+    public CommonResult updateUser(@RequestBody User user){
         userService.updateUser(user);
         return new CommonResult(ShopCode.SHOP_USER_UPDATE_SUCCESS.getCode(),ShopCode.SHOP_USER_UPDATE_SUCCESS.getMessage());
     }
@@ -62,7 +62,7 @@ public class UserController {
      */
     @PostMapping("user/useUserBalance")
     @ResponseBody
-    public void useUserBalance(@RequestParam("order") Order order){
+    public void useUserBalance(@RequestBody Order order){
         userService.useUserBalance(order);
     }
 

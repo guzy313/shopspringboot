@@ -28,24 +28,24 @@
     </resultMap>
 
     <select id="findAll"  resultMap="BaseResultMap">
-        select * from order
+        select * from `order`
     </select>
 
     <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.Order">
-        select * from order where id = #{id}
+        select * from `order` where id = #{id}
     </select>
 
     <insert id="add" parameterType="com.my.shop.pojo.Order">
-        insert into order (id,user_id,order_status,pay_status,shipping_status,address,consignee,
-            goods_id,goods_number,goods_price,goods_amount,shipping_fee,order_amount,coupon_id,money_paid
+        insert into `order` (id,user_id,order_status,pay_status,shipping_status,address,consignee,
+            goods_id,goods_number,goods_price,goods_amount,shipping_fee,order_amount,coupon_id,money_paid,
             pay_amount,add_time,confirm_time,pay_time)
          values (#{order.id},#{order.user_id},#{order.order_status},#{order.pay_status},#{order.shipping_status},#{order.address},#{order.consignee},
-            #{order.goods_id},#{order.goods_number},#{order.goods_price},#{order.goods_amount},#{order.shipping_fee},#{order.order_amount},#{order.coupon_id},#{order.money_paid}
+            #{order.goods_id},#{order.goods_number},#{order.goods_price},#{order.goods_amount},#{order.shipping_fee},#{order.order_amount},#{order.coupon_id},#{order.money_paid},
             #{order.pay_amount},#{order.add_time},#{order.confirm_time},#{order.pay_time})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.Order">
-        update order set user_id=#{order.user_id},
+        update `order` set user_id=#{order.user_id},
         order_status=#{order.order_status},
         pay_status=#{order.pay_status},
         shipping_status=#{order.shipping_status},
@@ -62,12 +62,12 @@
         pay_amount=#{order.pay_amount},
         add_time=#{order.add_time},
         confirm_time=#{order.confirm_time},
-        pay_time=#{order.pay_time},
+        pay_time=#{order.pay_time}
         where id=#{order.id}
     </update>
 
     <select id="findMaxId"  resultType="java.math.BigInteger">
-        select ifnull(max(id),1) id from order
+        select ifnull(max(id),1) id from `order`
     </select>
 
 </mapper>

@@ -22,21 +22,17 @@
     </select>
 
     <insert id="add" parameterType="com.my.shop.pojo.UserBalanceLog">
-        insert into user_balance_log (id,user_id,order_id,money_log_type,use_money,create_time)
-         values (#{userBalanceLog.id},#{userBalanceLog.user_id},#{userBalanceLog.order_id},#{userBalanceLog.money_log_type},#{userBalanceLog.use_money},#{user.create_time})
+        insert into user_balance_log (user_id,order_id,money_log_type,use_money,create_time)
+         values (#{userBalanceLog.user_id},#{userBalanceLog.order_id},#{userBalanceLog.money_log_type},#{userBalanceLog.use_money},#{userBalanceLog.create_time})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.UserBalanceLog">
+    <update id="update" parameterType="com.my.shop.pojo.UserBalanceLog">
         update user_balance_log set user_id=#{userBalanceLog.user_id},
         order_id=#{userBalanceLog.order_id},
         money_log_type=#{userBalanceLog.money_log_type},
         use_money=#{userBalanceLog.use_money},
         create_time=#{userBalanceLog.create_time}
-        where id=#{userBalanceLog.id}
+        where order_id=#{userBalanceLog.order_id} and user_id = #{userBalanceLog.user_id}
     </update>
-
-    <select id="findMaxId"  resultType="java.math.BigInteger">
-        select ifnull(max(id),1) id from user_balance_log
-    </select>
 
 </mapper>

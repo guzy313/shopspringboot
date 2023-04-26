@@ -28,7 +28,7 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.Coupon">
-        update goods set coupon_price = #{coupon.coupon_price},
+        update coupon set coupon_price = #{coupon.coupon_price},
         user_id=#{coupon.user_id},
         order_id=#{coupon.order_id},
         is_used=#{coupon.is_used},

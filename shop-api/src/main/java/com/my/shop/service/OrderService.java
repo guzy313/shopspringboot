@@ -6,6 +6,8 @@ import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Gzy
@@ -23,6 +25,6 @@ public interface OrderService {
      * @return
      */
     @PostMapping("/order/confirmOrder")
-    CommonResult confirmOrder(@Param("order") Order order);
+    CommonResult confirmOrder(@RequestBody Order order);
 
 }

@@ -39,7 +39,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public void useCoupon(Coupon coupon) {
-        if(ShopCode.SHOP_COUPON_ISUSED.getCode().compareTo(coupon.getIs_used()) != 0 ){
+        if(ShopCode.SHOP_COUPON_ISUSED.getCode().intValue() == coupon.getIs_used().intValue() ){
             CastException.cast(ShopCode.SHOP_COUPON_ISUSED);
         }
         coupon.setIs_used(ShopCode.SHOP_COUPON_ISUSED.getCode());

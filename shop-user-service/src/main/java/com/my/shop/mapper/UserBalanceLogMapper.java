@@ -25,8 +25,6 @@ public interface UserBalanceLogMapper {
 
     void add(@Param("userBalanceLog")UserBalanceLog userBalanceLog);
 
-    void updateByPrimaryKey(@Param("userBalanceLog")UserBalanceLog userBalanceLog);
-
-    BigInteger findMaxId();
+    void update(@Param("userBalanceLog")UserBalanceLog userBalanceLog);
 
 }

@@ -7,10 +7,8 @@ import com.my.shop.pojo.User;
 import com.my.shop.service.UserService;
 import feign.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 
@@ -20,6 +18,7 @@ import java.math.BigInteger;
  * @Description 用户控制器
  * @date create on 2023/4/20
  */
+@Controller
 public class UserController {
     @Autowired
     private UserService userService;
@@ -41,7 +40,7 @@ public class UserController {
      */
     @PostMapping("/user/createUser")
     @ResponseBody
-    public CommonResult createUser(@RequestParam User user){
+    public CommonResult createUser(@RequestBody User user){
         userService.createUser(user);
         return new CommonResult(200,"创建用户成功", ShopCode.SHOP_USER_CREATE_SUCCESS);
     }
@@ -52,7 +51,7 @@ public class UserController {
      */
     @PostMapping("user/updateUser")
     @ResponseBody
-    public CommonResult updateUser(User user){
+    public CommonResult updateUser(@RequestBody User user){
         userService.updateUser(user);
         return new CommonResult(ShopCode.SHOP_USER_UPDATE_SUCCESS.getCode(),ShopCode.SHOP_USER_UPDATE_SUCCESS.getMessage());
     }
@@ -63,7 +62,7 @@ public class UserController {
      */
     @PostMapping("user/useUserBalance")
     @ResponseBody
-    public void useUserBalance(@RequestParam("order") Order order){
+    public void useUserBalance(@RequestBody Order order){
         userService.useUserBalance(order);
     }
 

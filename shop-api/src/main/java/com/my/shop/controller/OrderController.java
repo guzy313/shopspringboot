@@ -6,6 +6,7 @@ import com.my.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,7 +29,7 @@ public class OrderController {
      */
     @PostMapping("/order/confirmOrder")
     @ResponseBody
-    CommonResult confirmOrder(@RequestParam("order") Order order){
+    CommonResult confirmOrder(@RequestBody Order order){
         orderService.confirmOrder(order);
         return new CommonResult(200,"确认订单成功");
     }

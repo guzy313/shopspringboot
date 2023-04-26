@@ -57,6 +57,7 @@ public class OrderServiceImpl implements OrderService {
            //7.返回成功状态
             return new CommonResult(ShopCode.SHOP_ORDER_CONFIRM.getCode(),ShopCode.SHOP_ORDER_CONFIRM.getMessage());
         }catch (Exception e){
+            e.printStackTrace();
             //1.确认订单失败,发送消息
             //2.返回失败状态
         }
@@ -84,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
             CastException.cast(ShopCode.SHOP_USER_NO_EXIST);
         }
         //订单价格是否合法
-        if(order.getOrder_amount().compareTo(BigDecimal.valueOf(0)) < 0 ){
+        if(BigDecimal.valueOf(0).compareTo(order.getOrder_amount()) > 0 ){
             CastException.cast(ShopCode.SHOP_ORDER_AMOUNT_INVALID);
         }
         //购买商品数量是否合法
@@ -166,7 +167,14 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal payAmount = order.getOrder_amount()
                     .subtract(money_paid)
                     .subtract(coupon.getCoupon_price());
-            order.setPay_amount(payAmount);
+            //如果扣除余额和优惠券之后小于0,则重新设置扣除用户的余额为(商品总价 - 优惠券价格)
+            if(payAmount.compareTo(BigDecimal.ZERO) < 0){
+                order.setMoney_paid(order.getGoods_amount().subtract(coupon.getCoupon_price()));
+                order.setPay_amount(BigDecimal.ZERO);
+            }else{
+                order.setPay_amount(payAmount);
+            }
+
         }
 
         //设置订单时间

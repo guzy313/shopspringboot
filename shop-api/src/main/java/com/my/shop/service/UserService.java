@@ -5,10 +5,7 @@ import com.my.shop.pojo.User;
 import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 
@@ -28,27 +25,27 @@ public interface UserService {
      * @return
      */
     @GetMapping("/user/getUserById")
-    User getUserById(@Param("id")BigInteger id);
+    User getUserById(@RequestParam("id")BigInteger id);
 
     /**
      * 创建用户
      * @param user
      */
     @PostMapping("user/createUser")
-    void createUser(@Param("user") User user);
+    void createUser(@RequestBody User user);
 
     /**
      * 更新用户
      * @param user
      */
     @PostMapping("user/updateUser")
-    void updateUser(User user);
+    void updateUser(@RequestBody User user);
 
     /**
      * 使用用户余额
      * @param order
      */
     @PostMapping("user/useUserBalance")
-    void useUserBalance(@Param("order") Order order);
+    void useUserBalance(@RequestBody Order order);
 
 }

@@ -5,10 +5,7 @@ import com.my.shop.pojo.Coupon;
 import com.my.shop.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 
@@ -37,11 +34,11 @@ public class CouponController {
 
     /**
      * 使用优惠券
-     * @param id
+     * @param coupon
      */
     @PostMapping("/coupon/useCoupon")
     @ResponseBody
-    CommonResult useCoupon(@RequestParam("coupon")Coupon coupon){
+    CommonResult useCoupon(@RequestBody Coupon coupon){
         return couponService.useCoupon(coupon);
     }
 
@@ -51,7 +48,7 @@ public class CouponController {
      */
     @PostMapping("/coupon/create")
     @ResponseBody
-    void create(@RequestParam("coupon")Coupon coupon){
+    void create(@RequestBody Coupon coupon){
         couponService.create(coupon);
     }
 
