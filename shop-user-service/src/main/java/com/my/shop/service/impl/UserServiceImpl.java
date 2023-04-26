@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //雪花算法自动生成下一个ID
-        IdWorker idWorker = new IdWorker(userMapper.findMaxId().longValue());
+        IdWorker idWorker = new IdWorker(userMapper.findAll().size());
         user.setId(BigInteger.valueOf(idWorker.nextId()));
         user.setUser_reg_time(Timestamp.valueOf(LocalDateTime.now()));
         userMapper.add(user);

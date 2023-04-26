@@ -46,7 +46,7 @@ public class GoodsServiceImpl implements GoodsService {
                 || goods.getGoods_number().compareTo(0) < 0){
             CastException.cast(ShopCode.SHOP_GOODS_ADD_FAIL);
         }
-        IdWorker idWorker = new IdWorker(goodsLogMapper.findMaxId().longValue());
+        IdWorker idWorker = new IdWorker(goodsLogMapper.findAll().size() + 1);
         goods.setId(BigInteger.valueOf(idWorker.nextId()));
         goods.setAdd_time(Timestamp.valueOf(LocalDateTime.now()));
         goodsMapper.add(goods);

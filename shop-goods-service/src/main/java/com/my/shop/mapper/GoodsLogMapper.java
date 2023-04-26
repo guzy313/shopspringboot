@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * @author Gzy
@@ -16,6 +17,8 @@ import java.math.BigInteger;
  */
 @Repository
 public interface GoodsLogMapper {
+
+    List<Goods> findAll();
 
     Goods findById(@Param("id") BigInteger id);
 

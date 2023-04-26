@@ -54,7 +54,7 @@ public class CouponServiceImpl implements CouponService {
                 ||coupon.getCoupon_price().compareTo(BigDecimal.ZERO) < 0 ){
             CastException.cast(ShopCode.SHOP_COUPON_INVALIED);
         }
-        IdWorker idWorker = new IdWorker(couponMapper.findMaxId().longValue());
+        IdWorker idWorker = new IdWorker(couponMapper.findAll().size() + 1);
         coupon.setId(BigInteger.valueOf(idWorker.nextId()));
         coupon.setIs_used(ShopCode.SHOP_COUPON_UNUSED.getCode());
         couponMapper.add(coupon);

@@ -110,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
         //设置订单状态不可见--订单未确认
         order.setOrder_status(ShopCode.SHOP_ORDER_NO_CONFIRM.getCode());
         //设置订单ID
-        IdWorker idWorker = new IdWorker(orderMapper.findMaxId().longValue());
+        IdWorker idWorker = new IdWorker(orderMapper.findAll().size());
         order.setId(BigInteger.valueOf(idWorker.nextId()));
         //核算运费是否正常
         BigDecimal shippingFee = this.calculateShippingFee(order.getOrder_amount());
