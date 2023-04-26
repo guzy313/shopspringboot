@@ -15,6 +15,8 @@ public interface GoodsService {
 
     Goods findById(BigInteger id);
 
+    void createGoods(Goods goods);
+
     void reduceNum(GoodsLog goodsLog);
 
 

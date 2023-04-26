@@ -9,6 +9,7 @@ import com.my.shop.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -48,9 +49,15 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public void create(Coupon coupon) {
+        if(coupon == null
+                ||coupon.getCoupon_price() == null
+                ||coupon.getCoupon_price().compareTo(BigDecimal.ZERO) < 0 ){
+            CastException.cast(ShopCode.SHOP_COUPON_INVALIED);
+        }
         IdWorker idWorker = new IdWorker(couponMapper.findMaxId().longValue());
         coupon.setId(BigInteger.valueOf(idWorker.nextId()));
         coupon.setIs_used(ShopCode.SHOP_COUPON_UNUSED.getCode());
         couponMapper.add(coupon);
+        System.out.println("创建优惠券成功");
     }
 }

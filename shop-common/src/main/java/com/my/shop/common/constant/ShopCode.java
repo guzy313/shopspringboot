@@ -56,6 +56,8 @@ public enum ShopCode {
     //订单确认失败
     SHOP_ORDER_CONFIRM_FAIL(false, 10005, "订单确认失败"),
     //商品不存在
+    SHOP_GOODS_ADD_FAIL(false, 20000, "商品添加失败"),
+    //商品不存在
     SHOP_GOODS_NO_EXIST(false, 20001, "商品不存在"),
     //订单价格非法
     SHOP_GOODS_PRICE_INVALID(false, 20002, "商品价格非法"),

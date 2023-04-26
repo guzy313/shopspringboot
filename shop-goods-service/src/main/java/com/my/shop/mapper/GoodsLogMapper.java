@@ -21,6 +21,6 @@ public interface GoodsLogMapper {
 
     void add(@Param("goodsLog") GoodsLog goodsLog);
 
-    Integer findMaxId();
+    BigInteger findMaxId();
 
 }

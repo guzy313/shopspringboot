@@ -11,7 +11,10 @@ import com.my.shop.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -31,6 +34,23 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Goods findById(BigInteger id) {
         return goodsMapper.findById(id);
+    }
+
+    @Override
+    public void createGoods(Goods goods) {
+        if(goods == null
+                || goods.getGoods_name() == null
+                || goods.getGoods_price() == null
+                || goods.getGoods_number() == null
+                || goods.getGoods_price().compareTo(BigDecimal.ZERO) < 0
+                || goods.getGoods_number().compareTo(0) < 0){
+            CastException.cast(ShopCode.SHOP_GOODS_ADD_FAIL);
+        }
+        IdWorker idWorker = new IdWorker(goodsLogMapper.findMaxId().longValue());
+        goods.setId(BigInteger.valueOf(idWorker.nextId()));
+        goods.setAdd_time(Timestamp.valueOf(LocalDateTime.now()));
+        goodsMapper.add(goods);
+        System.out.println("创建订单成功");
     }
 
     @Override
@@ -55,7 +75,7 @@ public class GoodsServiceImpl implements GoodsService {
             CastException.cast(ShopCode.SHOP_GOODS_NUM_NOT_ENOUGH);
         }else{
             //生成商品扣减日志ID
-            goodsLog.setId(Integer.valueOf(goodsLogMapper.findMaxId() + 1));
+            goodsLog.setId(goodsLogMapper.findMaxId().add(BigInteger.ONE));
             goodsLog.setLog_time(new Date());
 
             //扣减商品库存

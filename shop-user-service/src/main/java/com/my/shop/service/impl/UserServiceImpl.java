@@ -38,11 +38,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User user) {
+        if(user == null
+        || user.getUser_name() == null
+        || user.getUser_password() == null){
+            CastException.cast(ShopCode.SHOP_USER_CREATE_FAIL);
+        }
+
         //雪花算法自动生成下一个ID
         IdWorker idWorker = new IdWorker(userMapper.findMaxId().longValue());
         user.setId(BigInteger.valueOf(idWorker.nextId()));
-        user.setUser_money(BigDecimal.valueOf(10000));
-        user.setUser_score(100);
         user.setUser_reg_time(Timestamp.valueOf(LocalDateTime.now()));
         userMapper.add(user);
     }

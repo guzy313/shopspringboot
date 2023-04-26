@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class GoodsLog implements Serializable {
     //'主键'
-    private Integer id;
+    private BigInteger id;
     //'商品ID'
     private BigInteger goods_id;
     //'订单ID'
@@ -31,11 +31,12 @@ public class GoodsLog implements Serializable {
         this.goods_number = goods_number;
     }
 
-    public Integer getId() {
+
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
