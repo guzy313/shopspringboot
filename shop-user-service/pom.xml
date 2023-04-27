@@ -25,6 +25,12 @@
             <artifactId>shop-pojo</artifactId>
         </dependency>
 
+        <!-- 消息中间件rocketmq -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+        </dependency>
+
         <!--mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

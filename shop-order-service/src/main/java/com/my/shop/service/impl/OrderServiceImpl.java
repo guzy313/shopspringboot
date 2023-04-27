@@ -59,10 +59,20 @@ public class OrderServiceImpl implements OrderService {
         }catch (Exception e){
             e.printStackTrace();
             //1.确认订单失败,发送消息
-            //2.返回失败状态
-        }
+            //订单
+            BigInteger orderId = order.getId();
+            //优惠券
+            BigInteger coupon_id = order.getCoupon_id();
+            //商品库存
+            BigInteger goods_id = order.getGoods_id();
+            //商品日志
+            //用户余额
+            BigInteger user_id = order.getUser_id();
+            //用户余额日志
 
-        return null;
+            //2.返回失败状态
+            return new CommonResult(ShopCode.SHOP_ORDER_CONFIRM_FAIL.getCode(),ShopCode.SHOP_ORDER_CONFIRM_FAIL.getMessage());
+        }
     }
 
     /**

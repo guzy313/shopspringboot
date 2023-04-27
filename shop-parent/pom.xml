@@ -28,6 +28,7 @@
         <eureka.version>2.2.10.RELEASE</eureka.version>
         <shop.common.version>1.0-SNAPSHOT</shop.common.version>
         <shop.pojo.version>1.0-SNAPSHOT</shop.pojo.version>
+        <rocketmq.version>2.2.2</rocketmq.version>
     </properties>
 
     <!-- dependencyManagement 只是声明依赖,并不实现引入 -->
@@ -91,6 +92,13 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.spring.boot.version}</version>
+            </dependency>
+
+            <!-- rocketmq -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
             </dependency>
 
             <!--junit-->
