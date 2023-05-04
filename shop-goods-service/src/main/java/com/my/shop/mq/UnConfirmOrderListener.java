@@ -114,6 +114,7 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
                            mqMessageConsumerLogMapper.updateByPrimaryKey(mqMessageConsumerLog);
                         }
                     }else{
+                        System.out.println("消费失败超过3次,请手动处理");
                         return;
                     }
                 }

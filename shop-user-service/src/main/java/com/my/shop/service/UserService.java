@@ -34,18 +34,24 @@ public interface UserService {
      * 更新用户
      * @param user
      */
-    void updateUser(User user);
+    Integer updateUser(User user);
 
     /**
      * 使用用户余额
      * @param order
      */
-    void useUserBalance(Order order);
+    Integer useUserBalance(Order order);
+
+    /**
+     * 回退用户余额
+     * @param userBalanceLog
+     */
+    Integer unUseUserBalance(UserBalanceLog userBalanceLog);
 
     /**
      * 更新用户余额
      * @param userBalanceLog
      */
-    void updateUserBalance(UserBalanceLog userBalanceLog);
+    Integer updateUserBalance(UserBalanceLog userBalanceLog);
 
 }

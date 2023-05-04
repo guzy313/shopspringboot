@@ -83,6 +83,7 @@ public class OrderServiceImpl implements OrderService {
             mqShopMessageDto.setUserId(user_id);
             mqShopMessageDto.setGoodsId(goods_id);
             mqShopMessageDto.setGoodsNumber(order.getGoods_number());
+            mqShopMessageDto.setUseMoney(order.getMoney_paid());
             String body = JSON.toJSONString(mqShopMessageDto);
             messageProducer.asyncSendBroadcast(body,
                     MQMessageConstant.TOPIC,

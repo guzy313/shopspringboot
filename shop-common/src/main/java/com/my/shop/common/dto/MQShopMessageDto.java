@@ -1,6 +1,7 @@
 package com.my.shop.common.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -16,6 +17,7 @@ public class MQShopMessageDto implements Serializable {
     private Integer goodsNumber;
     private BigInteger payId;
     private BigInteger userId;
+    private BigDecimal useMoney;
 
 
     public BigInteger getOrderId() {
@@ -66,14 +68,24 @@ public class MQShopMessageDto implements Serializable {
         this.userId = userId;
     }
 
+    public BigDecimal getUseMoney() {
+        return useMoney;
+    }
+
+    public void setUseMoney(BigDecimal useMoney) {
+        this.useMoney = useMoney;
+    }
+
     @Override
     public String toString() {
-        return "ShopMessageDto{" +
+        return "MQShopMessageDto{" +
                 "orderId=" + orderId +
                 ", couponId=" + couponId +
                 ", goodsId=" + goodsId +
+                ", goodsNumber=" + goodsNumber +
                 ", payId=" + payId +
                 ", userId=" + userId +
+                ", useMoney=" + useMoney +
                 '}';
     }
 }

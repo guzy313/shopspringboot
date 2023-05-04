@@ -20,9 +20,9 @@ public interface UserMapper {
 
     User findById(@Param("id")BigInteger id);
 
-    void add(@Param("user")User user);
+    Integer add(@Param("user")User user);
 
-    void updateByPrimaryKey(@Param("user")User user);
+    Integer updateByPrimaryKey(@Param("user")User user);
 
     BigInteger findMaxId();
 

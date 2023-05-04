@@ -52,18 +52,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
+    public Integer updateUser(User user) {
         if(user == null){
             CastException.cast(ShopCode.SHOP_USER_IS_NULL);
         }
         if(user.getId() == null){
             CastException.cast(ShopCode.SHOP_USER_NO_EXIST);
         }
-        userMapper.updateByPrimaryKey(user);
+        return userMapper.updateByPrimaryKey(user);
     }
 
     @Override
-    public void useUserBalance(Order order) {
+    public Integer useUserBalance(Order order) {
         UserBalanceLog userBalanceLog = new UserBalanceLog();
 
         userBalanceLog.setOrder_id(order.getId());
@@ -74,11 +74,16 @@ public class UserServiceImpl implements UserService {
         userBalanceLog.setCreate_time(Timestamp.valueOf(LocalDateTime.now()));
 
         //更新操作
-        this.updateUserBalance(userBalanceLog);
+        return this.updateUserBalance(userBalanceLog);
+    }
+
+    public Integer unUseUserBalance(UserBalanceLog userBalanceLog) {
+        //更新操作
+        return this.updateUserBalance(userBalanceLog);
     }
 
     @Override
-    public void updateUserBalance(UserBalanceLog userBalanceLog) {
+    public Integer updateUserBalance(UserBalanceLog userBalanceLog) {
         //获取使用的用户余额
         BigDecimal use_money = userBalanceLog.getUse_money();
         //获取用户
@@ -87,7 +92,7 @@ public class UserServiceImpl implements UserService {
         if(user == null){
             CastException.cast(ShopCode.SHOP_USER_NO_EXIST);
         }
-
+        Integer effectUserRows = 0;
 
         //1.校验参数是否合法
         if(userBalanceLog == null || userBalanceLog.getUser_id() == null
@@ -115,7 +120,7 @@ public class UserServiceImpl implements UserService {
             //进行余额扣减
             user.setUser_money(user.getUser_money().subtract(use_money));
             //更新用户信息
-            userMapper.updateByPrimaryKey(user);
+            effectUserRows = userMapper.updateByPrimaryKey(user);
             System.out.println(ShopCode.SHOP_USER_MONEY_PAID);
         }
 
@@ -135,12 +140,13 @@ public class UserServiceImpl implements UserService {
             //进行余额增加
             user.setUser_money(user.getUser_money().add(use_money));
             //更新用户信息
-            userMapper.updateByPrimaryKey(user);
+            effectUserRows = userMapper.updateByPrimaryKey(user);
             System.out.println(ShopCode.SHOP_USER_MONEY_REFUND);
-
+            return effectUserRows;
         }
 
         //5.记录用户订单余额变动日志
         userBalanceLogMapper.add(userBalanceLog);
+        return effectUserRows;
     }
 }

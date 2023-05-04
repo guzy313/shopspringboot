@@ -28,7 +28,7 @@ import java.util.UUID;
 /**
  * @author Gzy
  * @version 1.0
- * @Description 优惠券处理确认订单失败 MQ消息监听
+ * @Description 优惠券处理确认订单失败 MQ消息监听 (回退优惠券)
  * @date create on 2023/4/28
  */
 @Component
