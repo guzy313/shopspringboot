@@ -82,16 +82,36 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
                consumer_status.intValue()){
                    //消息处理失败情况
                    if(mqMessageConsumerLogFind.getConsumer_times().intValue() < 3){
+
                        //处理失败次数小于3次,再次尝试处理
                        mqMessageConsumerLogFind.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_PROCESSING.getCode());
+                       mqMessageConsumerLogFind.setConsumer_time(Timestamp.valueOf(LocalDateTime.now()));
+
+                       //更新日志记录
                        Integer effectRows = mqMessageConsumerLogMapper.updateByPrimaryKeyWithLock(mqMessageConsumerLogFind);
                        if(effectRows <= 0){
                            System.out.println("并发修改,稍后处理");
+                       }else{
+                           //此处重新查询更新之后的消息日志信息
+                           mqMessageConsumerLogFind = mqMessageConsumerLogMapper.findByParams(mqMessageConsumerLogCondition);
+                           //开始回退消费券[真正业务]
+                           Integer unUseCouponRows = couponService.unUseCoupon(mqShopMessageDto.getCouponId());
+                           if(unUseCouponRows > 0){
+                               System.out.println("回退优惠券成功");
+                               mqMessageConsumerLogFind.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_SUCCESS.getCode());
+                           }else {
+                               System.out.println("回退优惠券失败");
+                               mqMessageConsumerLogFind.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_FAIL.getCode());
+                           }
+                           //此处更新业务处理结果 的 日志状态[不更新次数只更新状态,因此不用考虑重复执行问题]
+                           mqMessageConsumerLogMapper.updateByPrimaryKey(mqMessageConsumerLogFind);
                        }
                    }else {
                        return;
                    }
                }
+
+
            }else {
                //消息未被消费过
                //设置消费者消息日志信息
@@ -107,6 +127,15 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
 
                //开始回退消费券[真正业务]
                Integer effectRows = couponService.unUseCoupon(mqShopMessageDto.getCouponId());
+               if(effectRows > 0){
+                   System.out.println("回退优惠券成功");
+                   mqMessageConsumerLog.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_SUCCESS.getCode());
+               }else{
+                   //回退失败情况
+                   System.out.println("回退优惠券失败");
+                   mqMessageConsumerLog.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_FAIL.getCode());
+                   mqMessageConsumerLog.setConsumer_times(1);
+               }
                //保存消息日志
                Integer addLogs = mqMessageConsumerLogMapper.add(mqMessageConsumerLog);
            }

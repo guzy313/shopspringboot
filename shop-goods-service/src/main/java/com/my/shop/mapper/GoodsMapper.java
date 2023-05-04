@@ -18,9 +18,9 @@ public interface GoodsMapper {
 
     Goods findById(@Param("id") BigInteger id);
 
-    void add(@Param("goods")Goods goods);
+    Integer add(@Param("goods")Goods goods);
 
-    void updateByPrimaryKey(@Param("goods")Goods goods);
+    Integer updateByPrimaryKey(@Param("goods")Goods goods);
 
     BigInteger findMaxId();
 

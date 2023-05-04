@@ -13,6 +13,7 @@ public class MQShopMessageDto implements Serializable {
     private BigInteger orderId;
     private BigInteger couponId;
     private BigInteger goodsId;
+    private Integer goodsNumber;
     private BigInteger payId;
     private BigInteger userId;
 
@@ -39,6 +40,14 @@ public class MQShopMessageDto implements Serializable {
 
     public void setGoodsId(BigInteger goodsId) {
         this.goodsId = goodsId;
+    }
+
+    public Integer getGoodsNumber() {
+        return goodsNumber;
+    }
+
+    public void setGoodsNumber(Integer goodsNumber) {
+        this.goodsNumber = goodsNumber;
     }
 
     public BigInteger getPayId() {

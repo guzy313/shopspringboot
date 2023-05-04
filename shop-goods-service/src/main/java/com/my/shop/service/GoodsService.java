@@ -19,5 +19,7 @@ public interface GoodsService {
 
     void reduceNum(GoodsLog goodsLog);
 
+    Integer unReduceNum(GoodsLog goodsLog);
+
 
 }

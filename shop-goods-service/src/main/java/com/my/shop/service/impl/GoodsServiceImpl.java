@@ -88,4 +88,25 @@ public class GoodsServiceImpl implements GoodsService {
         //输出扣减库存成功提示
         System.out.println(ShopCode.SHOP_REDUCE_GOODS_SUCCESS);
     }
+
+
+    @Override
+    public Integer unReduceNum(GoodsLog goodsLog) {
+        Goods goods = goodsMapper.findById(goodsLog.getGoods_id());
+        if(goods == null){
+            CastException.cast(ShopCode.SHOP_GOODS_NO_EXIST);
+        }
+        //生成商品库存回退日志ID
+        goodsLog.setId(goodsLogMapper.findMaxId().add(BigInteger.ONE));
+        goodsLog.setLog_time(new Date());
+        //回退商品库存
+        goods.setGoods_number(goods.getGoods_number().intValue() + goodsLog.getGoods_number());
+        Integer effectRows = goodsMapper.updateByPrimaryKey(goods);
+
+        //生成商品扣减日志ID和时间,添加商品操作日志
+        goodsLog.setId(goodsLogMapper.findMaxId().add(BigInteger.ONE));
+        goodsLog.setLog_time(new Date());
+        goodsLogMapper.add(goodsLog);
+        return effectRows;
+    }
 }

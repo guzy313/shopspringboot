@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.MqMessageConsumerLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.MqMessageConsumerLog" >
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="group_name" property="group_name" jdbcType="VARCHAR"/>
+        <result column="msg_topic" property="msg_topic" jdbcType="VARCHAR"/>
+        <result column="msg_tag" property="msg_tag" jdbcType="VARCHAR"/>
+        <result column="msg_key" property="msg_key" jdbcType="VARCHAR"/>
+        <result column="msg_body" property="msg_body" jdbcType="VARCHAR"/>
+        <result column="consumer_status" property="consumer_status" jdbcType="INTEGER"/>
+        <result column="consumer_times" property="consumer_times" jdbcType="INTEGER"/>
+        <result column="consumer_time" property="consumer_time" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from mq_message_consumer
+    </select>
+
+    <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.MqMessageConsumerLog">
+        select * from mq_message_consumer where id = #{id}
+    </select>
+
+    <select id="findByParams" parameterType="com.my.shop.pojo.MqMessageConsumerLog" resultMap="BaseResultMap">
+        select * from mq_message_consumer
+        <where>
+            <if test="mqMessageConsumerLog.group_name != null">
+                and group_name = #{mqMessageConsumerLog.group_name}
+            </if>
+            <if test="mqMessageConsumerLog.msg_topic != null">
+                and msg_topic = #{mqMessageConsumerLog.msg_topic}
+            </if>
+            <if test="mqMessageConsumerLog.msg_tag != null">
+                and msg_tag = #{mqMessageConsumerLog.msg_tag}
+            </if>
+            <if test="mqMessageConsumerLog.msg_key != null">
+                and msg_key = #{mqMessageConsumerLog.msg_key}
+            </if>
+            <if test="mqMessageConsumerLog.consumer_status != null">
+                and consumer_status = #{mqMessageConsumerLog.consumer_status}
+            </if>
+            <if test="mqMessageConsumerLog.consumer_times != null">
+                and consumer_times = #{mqMessageConsumerLog.consumer_times}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.MqMessageConsumerLog">
+        insert into mq_message_consumer (id,group_name,msg_topic,msg_tag,msg_key,msg_body,
+        consumer_status,consumer_times,consumer_time,remark)
+         values (#{mqMessageConsumerLog.id},#{mqMessageConsumerLog.group_name},#{mqMessageConsumerLog.msg_topic},#{mqMessageConsumerLog.msg_tag},#{mqMessageConsumerLog.msg_key},#{mqMessageConsumerLog.msg_body},
+        #{mqMessageConsumerLog.consumer_status},#{mqMessageConsumerLog.consumer_times},#{mqMessageConsumerLog.consumer_time},#{mqMessageConsumerLog.remark})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.MqMessageConsumerLog">
+        update mq_message_consumer set group_name = #{mqMessageConsumerLog.group_name},
+        msg_topic=#{mqMessageConsumerLog.msg_topic},
+        msg_tag=#{mqMessageConsumerLog.msg_tag},
+        msg_key=#{mqMessageConsumerLog.msg_key},
+        msg_body=#{mqMessageConsumerLog.msg_body},
+        consumer_status=#{mqMessageConsumerLog.consumer_status},
+        consumer_times=#{mqMessageConsumerLog.consumer_times},
+        consumer_time=#{mqMessageConsumerLog.consumer_time},
+        remark=#{mqMessageConsumerLog.remark}
+        where id=#{mqMessageConsumerLog.id}
+    </update>
+
+    <update id="updateByPrimaryKeyWithLock" parameterType="com.my.shop.pojo.MqMessageConsumerLog">
+        update mq_message_consumer set group_name = #{mqMessageConsumerLog.group_name},
+        msg_topic=#{mqMessageConsumerLog.msg_topic},
+        msg_tag=#{mqMessageConsumerLog.msg_tag},
+        msg_key=#{mqMessageConsumerLog.msg_key},
+        msg_body=#{mqMessageConsumerLog.msg_body},
+        consumer_status=#{mqMessageConsumerLog.consumer_status},
+        consumer_times=#{mqMessageConsumerLog.consumer_times} + 1,
+        consumer_time=#{mqMessageConsumerLog.consumer_time},
+        remark=#{mqMessageConsumerLog.remark}
+        where id=#{mqMessageConsumerLog.id} and consumer_times=#{mqMessageConsumerLog.consumer_times}
+    </update>
+
+    <select id="findMaxId"  resultType="java.math.BigInteger">
+        select ifnull(max(id),1) id from mq_message_consumer
+    </select>
+
+</mapper>

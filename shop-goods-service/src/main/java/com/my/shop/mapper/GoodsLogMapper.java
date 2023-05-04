@@ -22,7 +22,7 @@ public interface GoodsLogMapper {
 
     Goods findById(@Param("id") BigInteger id);
 
-    void add(@Param("goodsLog") GoodsLog goodsLog);
+    Integer add(@Param("goodsLog") GoodsLog goodsLog);
 
     BigInteger findMaxId();
 
