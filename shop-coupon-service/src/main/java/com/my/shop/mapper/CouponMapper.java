@@ -20,9 +20,9 @@ public interface CouponMapper {
 
     Coupon findById(@Param("id") BigInteger id);
 
-    void add(@Param("coupon")Coupon Coupon);
+    Integer add(@Param("coupon")Coupon Coupon);
 
-    void updateByPrimaryKey(@Param("coupon")Coupon Coupon);
+    Integer updateByPrimaryKey(@Param("coupon")Coupon Coupon);
 
     BigInteger findMaxId();
 

@@ -24,7 +24,7 @@ public class MqMessageConsumerLog implements Serializable {
     private String msg_body;
     //'消息状态 0正在处理 1处理成功 2处理失败'
     private Integer consumer_status;
-    //'消费次数'
+    //'消费次数-指失败次数,成功则为0失败+1,超过3次不允许再消费'
     private Integer consumer_times;
     //'消费时间'
     private Timestamp consumer_time;

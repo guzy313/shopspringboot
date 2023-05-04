@@ -18,8 +18,10 @@ public interface CouponService {
 
     Coupon findById(BigInteger id) throws Exception;
 
-    void useCoupon(Coupon coupon);
+    Integer useCoupon(Coupon coupon);
 
-    void create(Coupon coupon);
+    Integer unUseCoupon(BigInteger id);
+
+    Integer create(Coupon coupon);
 
 }

@@ -1,11 +1,16 @@
 package com.my.shop.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.my.shop.common.CommonResult;
+import com.my.shop.common.constant.MQMessageConstant;
 import com.my.shop.common.constant.ShopCode;
+import com.my.shop.common.dto.MQShopMessageDto;
 import com.my.shop.common.exception.CastException;
 import com.my.shop.common.util.IdWorker;
 import com.my.shop.mapper.OrderMapper;
 import com.my.shop.pojo.*;
+import com.my.shop.producer.MessageProducer;
+import com.my.shop.producer.OrderProducer;
 import com.my.shop.service.CouponService;
 import com.my.shop.service.GoodsService;
 import com.my.shop.service.OrderService;
@@ -34,6 +39,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     @Autowired
     private CouponService couponService;
+
+    @Autowired
+    private MessageProducer messageProducer;
 
     @Override
     public CommonResult confirmOrder(Order order) {
@@ -69,8 +77,17 @@ public class OrderServiceImpl implements OrderService {
             //用户余额
             BigInteger user_id = order.getUser_id();
             //用户余额日志
-
+            MQShopMessageDto mqShopMessageDto = new MQShopMessageDto();
+            mqShopMessageDto.setCouponId(coupon_id);
+            mqShopMessageDto.setOrderId(orderId);
+            mqShopMessageDto.setUserId(user_id);
+            mqShopMessageDto.setGoodsId(goods_id);
+            String body = JSON.toJSONString(mqShopMessageDto);
+            messageProducer.asyncSendBroadcast(body,
+                    MQMessageConstant.TOPIC,
+                    MQMessageConstant.TAG_UN_CONFIRM_ORDER,mqShopMessageDto.getOrderId().toString());
             //2.返回失败状态
+            System.out.println("订单失败,开始进行数据回退");
             return new CommonResult(ShopCode.SHOP_ORDER_CONFIRM_FAIL.getCode(),ShopCode.SHOP_ORDER_CONFIRM_FAIL.getMessage());
         }
     }
