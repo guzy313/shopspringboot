@@ -18,7 +18,7 @@ public class Payment implements Serializable {
     //'支付金额'
     private Integer pay_amount;
     //'是否已支付 0否 1是'
-    private BigInteger is_paid;
+    private Integer is_paid;
 
     public BigInteger getId() {
         return id;
@@ -44,11 +44,11 @@ public class Payment implements Serializable {
         this.pay_amount = pay_amount;
     }
 
-    public BigInteger getIs_paid() {
+    public Integer getIs_paid() {
         return is_paid;
     }
 
-    public void setIs_paid(BigInteger is_paid) {
+    public void setIs_paid(Integer is_paid) {
         this.is_paid = is_paid;
     }
 }

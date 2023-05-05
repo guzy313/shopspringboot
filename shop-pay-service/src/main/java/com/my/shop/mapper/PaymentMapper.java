@@ -18,9 +18,13 @@ public interface PaymentMapper {
 
     List<Payment> findAll();
 
+    List<Payment> findByParams(@Param("payment")Payment payment);
+
     Payment findById(@Param("id") BigInteger id);
 
     void add(@Param("payment")Payment payment);
+
+    Integer updateByPrimaryKey(@Param("payment")Payment payment);
 
     BigInteger findMaxId();
 

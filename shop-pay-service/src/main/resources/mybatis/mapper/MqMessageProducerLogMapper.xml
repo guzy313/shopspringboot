@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.my.shop.mapper.MqMessageProducerLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.my.shop.pojo.MqMessageProducerLog" >
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="group_name" property="group_name" jdbcType="VARCHAR"/>
+        <result column="msg_topic" property="msg_topic" jdbcType="VARCHAR"/>
+        <result column="msg_tag" property="msg_tag" jdbcType="VARCHAR"/>
+        <result column="msg_key" property="msg_key" jdbcType="VARCHAR"/>
+        <result column="msg_body" property="msg_body" jdbcType="VARCHAR"/>
+        <result column="msg_status" property="msg_status" jdbcType="INTEGER"/>
+        <result column="create_time" property="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from mq_message_producer
+    </select>
+
+    <select id="findById" parameterType="java.math.String" resultType="com.my.shop.pojo.MqMessageProducerLog">
+        select * from mq_message_producer where id = #{id}
+    </select>
+
+    <select id="findByParams" parameterType="com.my.shop.pojo.MqMessageProducerLog" resultMap="BaseResultMap">
+        select * from mq_message_producer
+        <where>
+            <if test="mqMessageConsumerLog.group_name != null">
+                and group_name = #{mqMessageProducerLog.group_name}
+            </if>
+            <if test="mqMessageConsumerLog.msg_topic != null">
+                and msg_topic = #{mqMessageProducerLog.msg_topic}
+            </if>
+            <if test="mqMessageConsumerLog.msg_tag != null">
+                and msg_tag = #{mqMessageProducerLog.msg_tag}
+            </if>
+            <if test="mqMessageConsumerLog.msg_key != null">
+                and msg_key = #{mqMessageProducerLog.msg_key}
+            </if>
+            <if test="mqMessageConsumerLog.consumer_status != null">
+                and msg_status = #{mqMessageProducerLog.msg_status}
+            </if>
+            <if test="mqMessageConsumerLog.consumer_times != null">
+                and create_time = #{mqMessageProducerLog.create_time}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" parameterType="com.my.shop.pojo.MqMessageProducerLog">
+        insert into mq_message_producer (id,group_name,msg_topic,msg_tag,msg_key,msg_body,
+        msg_status,create_time)
+         values (#{mqMessageProducerLog.id},#{mqMessageProducerLog.group_name},#{mqMessageProducerLog.msg_topic},#{mqMessageProducerLog.msg_tag},#{mqMessageProducerLog.msg_key},#{mqMessageProducerLog.msg_body},
+        #{mqMessageProducerLog.msg_status},#{mqMessageConsumerLog.create_time})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.MqMessageProducerLog">
+        update mq_message_producer set group_name = #{mqMessageConsumerLog.group_name},
+        msg_topic=#{mqMessageProducerLog.msg_topic},
+        msg_tag=#{mqMessageProducerLog.msg_tag},
+        msg_key=#{mqMessageProducerLog.msg_key},
+        msg_body=#{mqMessageProducerLog.msg_body},
+        msg_status=#{mqMessageProducerLog.msg_status},
+        create_time=#{mqMessageProducerLog.create_time},
+        where id=#{mqMessageProducerLog.id}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from mq_message_producer where id = #{id}
+    </delete>
+
+</mapper>

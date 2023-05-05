@@ -103,6 +103,8 @@ public enum ShopCode {
     SHOP_MQ_MESSAGE_BODY_IS_EMPTY(false, 60002, "消息体不能为空"),
     //消息发送失败
     SHOP_MQ_SEND_MESSAGE_FAIL(false,60003,"消息发送失败"),
+    //消息发送成功
+    SHOP_MQ_SEND_MESSAGE_SUCCESS(false,60004,"消息发送成功"),
     //支付订单未找到
     SHOP_PAYMENT_NOT_FOUND(false,70001,"支付订单未找到"),
     //支付订单已支付

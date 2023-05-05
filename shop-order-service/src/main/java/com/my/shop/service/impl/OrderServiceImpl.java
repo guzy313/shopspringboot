@@ -60,7 +60,6 @@ public class OrderServiceImpl implements OrderService {
                 //判断是否使用余额
                 this.useUserBalance(order);
             }
-            int i = 1/0;
             //6.确认订单(将订单更新为可见)
             this.updateOrderStatus(order);
            //7.返回成功状态

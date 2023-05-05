@@ -6,7 +6,7 @@
 <mapper namespace="com.my.shop.mapper.MqMessageConsumerLogMapper">
 
     <resultMap id="BaseResultMap" type="com.my.shop.pojo.MqMessageConsumerLog" >
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="group_name" property="group_name" jdbcType="VARCHAR"/>
         <result column="msg_topic" property="msg_topic" jdbcType="VARCHAR"/>
         <result column="msg_tag" property="msg_tag" jdbcType="VARCHAR"/>
@@ -23,7 +23,7 @@
         select * from mq_message_consumer
     </select>
 
-    <select id="findById" parameterType="java.math.BigInteger" resultType="com.my.shop.pojo.MqMessageConsumerLog">
+    <select id="findById" parameterType="java.lang.String" resultType="com.my.shop.pojo.MqMessageConsumerLog">
         select * from mq_message_consumer where id = #{id}
     </select>
 
@@ -83,9 +83,5 @@
         remark=#{mqMessageConsumerLog.remark}
         where id=#{mqMessageConsumerLog.id} and consumer_times=#{mqMessageConsumerLog.consumer_times}
     </update>
-
-    <select id="findMaxId"  resultType="java.math.BigInteger">
-        select ifnull(max(id),1) id from mq_message_consumer
-    </select>
 
 </mapper>

@@ -16,6 +16,9 @@ public class MQMessageConstant {
     //标签-确认订单失败回退(删除订单) 发送消息
     public final static String TAG_UN_CONFIRM_ORDER = "unConfirmOrder";
 
+    //标签-订单支付成功 发送消息
+    public final static String TAG_PAYMENT_SUCCESS = "paySuccess";
+
 
 
 }
