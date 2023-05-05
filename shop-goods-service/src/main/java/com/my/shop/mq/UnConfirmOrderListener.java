@@ -138,6 +138,7 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
                     System.out.println("商品库存回退成功");
                 }else{
                     mqMessageConsumerLog.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_FAIL.getCode());
+                    mqMessageConsumerLog.setConsumer_times(1);
                     System.out.println("商品库存回退失败");
                 }
                 Integer addLogs = mqMessageConsumerLogMapper.add(mqMessageConsumerLog);

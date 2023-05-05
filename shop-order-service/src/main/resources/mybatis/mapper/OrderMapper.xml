@@ -66,6 +66,10 @@
         where id=#{order.id}
     </update>
 
+    <delete id="deleteByPrimaryKey" parameterType="java.math.BigInteger">
+        delete from `order` where id = #{id}
+    </delete>
+
     <select id="findMaxId"  resultType="java.math.BigInteger">
         select ifnull(max(id),1) id from `order`
     </select>

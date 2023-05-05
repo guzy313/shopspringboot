@@ -20,11 +20,13 @@ public interface OrderMapper {
 
     Order findById(@Param("id")BigInteger id);
 
-    void add(@Param("order")Order order);
+    Integer add(@Param("order")Order order);
 
     BigInteger findMaxId();
 
-    void updateByPrimaryKey(@Param("order")Order order);
+    Integer updateByPrimaryKey(@Param("order")Order order);
+
+    Integer deleteByPrimaryKey(@Param("id")BigInteger id);
 
 
 }

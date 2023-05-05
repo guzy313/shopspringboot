@@ -94,6 +94,11 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public Integer deleteOrderByPrimaryKey(BigInteger id) {
+        return orderMapper.deleteByPrimaryKey(id);
+    }
+
     /**
      * 校验订单
      * @param order
@@ -265,6 +270,10 @@ public class OrderServiceImpl implements OrderService {
         userService.useUserBalance(order);
     }
 
+    /**
+     * 更新订单状态
+     * @param order
+     */
     private void updateOrderStatus(Order order){
         order.setPay_status(ShopCode.SHOP_ORDER_PAY_STATUS_NO_PAY.getCode());
         order.setOrder_status(ShopCode.SHOP_ORDER_CONFIRM.getCode());
