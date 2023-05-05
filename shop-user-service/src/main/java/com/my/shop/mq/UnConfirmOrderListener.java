@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  * @Description 用户服务-消息订阅 确认订单失败回退(回退用户余额)
  * @date create on 2023/5/4
  */
-@RocketMQMessageListener(consumerGroup = "${rocket.consumer.group}",
+@RocketMQMessageListener(consumerGroup = "${rocketmq.consumer.group}",
         topic = MQMessageConstant.TOPIC,
         consumeMode = ConsumeMode.CONCURRENTLY,
         messageModel = MessageModel.BROADCASTING,
@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
         selectorExpression = MQMessageConstant.TAG_UN_CONFIRM_ORDER)
 @Component
 public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
-    @Value("${rocket.consumer.group}")
+    @Value("${rocketmq.consumer.group}")
     private String consumerGroup;
     @Resource
     private UserService userService;
@@ -49,7 +49,7 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
         String tags = messageExt.getTags();
         String keys = messageExt.getKeys();
         String body = new String(messageExt.getBody());
-        MQShopMessageDto mqShopMessageDto = (MQShopMessageDto)JSON.parse(body);
+        MQShopMessageDto mqShopMessageDto = (MQShopMessageDto)JSON.parseObject(body,MQShopMessageDto.class);
 
         //构建用户余额日志对象
         UserBalanceLog userBalanceLog = new UserBalanceLog();

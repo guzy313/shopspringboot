@@ -60,8 +60,8 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
         String keys = messageExt.getKeys();
 
         try {
-            String messageBody = new String(messageExt.getBody(), "UTF-8");
-            MQShopMessageDto mqShopMessageDto = (MQShopMessageDto)JSON.parse(messageBody);
+            String body = new String(messageExt.getBody(), "UTF-8");
+            MQShopMessageDto mqShopMessageDto = (MQShopMessageDto) JSON.parseObject(body,MQShopMessageDto.class);
             //查询消息消费日志的查询条件对象
             MqMessageConsumerLog mqMessageConsumerLogCondition = new MqMessageConsumerLog();
             mqMessageConsumerLogCondition.setGroup_name(consumerGroup);
@@ -129,7 +129,7 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
                 mqMessageConsumerLog.setMsg_key(keys);
                 mqMessageConsumerLog.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_PROCESSING.getCode());
                 mqMessageConsumerLog.setConsumer_times(0);
-                mqMessageConsumerLog.setMsg_body(messageBody);
+                mqMessageConsumerLog.setMsg_body(body);
                 mqMessageConsumerLog.setId(UUIDWorker.getUUIDFormat());
                 //开始回退商品库存[真正业务],并记录商品回退日志
                 Integer unReduceNum = goodsService.unReduceNum(goodsLog);

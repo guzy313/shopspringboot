@@ -100,7 +100,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsLog.setId(goodsLogMapper.findMaxId().add(BigInteger.ONE));
         goodsLog.setLog_time(new Date());
         //回退商品库存
-        goods.setGoods_number(goods.getGoods_number().intValue() + goodsLog.getGoods_number());
+        goods.setGoods_number(goods.getGoods_number().intValue() - goodsLog.getGoods_number());
         Integer effectRows = goodsMapper.updateByPrimaryKey(goods);
 
         //生成商品扣减日志ID和时间,添加商品操作日志

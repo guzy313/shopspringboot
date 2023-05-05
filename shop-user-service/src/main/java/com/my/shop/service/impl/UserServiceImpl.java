@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer useUserBalance(Order order) {
         UserBalanceLog userBalanceLog = new UserBalanceLog();
-
+        System.out.println("run to here ..");
         userBalanceLog.setOrder_id(order.getId());
         //设置日志类型为付款
         userBalanceLog.setMoney_log_type(ShopCode.SHOP_USER_MONEY_PAID.getCode());

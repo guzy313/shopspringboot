@@ -55,6 +55,7 @@ public class CouponServiceImpl implements CouponService {
             CastException.cast(ShopCode.SHOP_COUPON_NO_EXIST);
         }
         //回退消费券
+        coupon.setOrder_id(null);
         coupon.setIs_used(ShopCode.SHOP_COUPON_UNUSED.getCode());
         coupon.setUsed_time(null);
         Integer effectRows = couponMapper.updateByPrimaryKey(coupon);

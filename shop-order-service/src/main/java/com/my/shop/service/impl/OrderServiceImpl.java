@@ -60,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
                 //判断是否使用余额
                 this.useUserBalance(order);
             }
+            int i = 1/0;
             //6.确认订单(将订单更新为可见)
             this.updateOrderStatus(order);
            //7.返回成功状态
@@ -186,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
                 CastException.cast(ShopCode.SHOP_COUPON_NO_EXIST);
             }
             //判断优惠券是否已使用
-            if(coupon.getIs_used().compareTo(ShopCode.SHOP_COUPON_ISUSED.getCode()) == 0){
+            if(ShopCode.SHOP_COUPON_ISUSED.getCode().compareTo(coupon.getIs_used()) == 0){
                 CastException.cast(ShopCode.SHOP_COUPON_ISUSED);
             }
         }

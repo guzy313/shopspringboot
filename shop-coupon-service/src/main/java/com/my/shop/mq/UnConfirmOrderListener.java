@@ -56,7 +56,7 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
         String keys = messageExt.getKeys();
        try {
            String body = new String(messageExt.getBody(), "UTF-8");
-           MQShopMessageDto mqShopMessageDto = (MQShopMessageDto)JSON.parse(body);
+           MQShopMessageDto mqShopMessageDto = (MQShopMessageDto) JSON.parseObject(body,MQShopMessageDto.class);
 
            //消息消费日志
            MqMessageConsumerLog mqMessageConsumerLogCondition = new MqMessageConsumerLog();

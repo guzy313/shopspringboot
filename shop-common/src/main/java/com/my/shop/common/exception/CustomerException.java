@@ -16,5 +16,11 @@ public class CustomerException extends RuntimeException{
         this.shopCode = shopCode;
     }
 
+    @Override
+    public String toString() {
+        return "CustomerException{" +
+                "shopCode=" + shopCode +
+                '}';
+    }
 }
 
