@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.my.shop.common.constant.MQMessageConstant;
 import com.my.shop.common.constant.ShopCode;
 import com.my.shop.common.dto.MQShopMessageDto;
+import com.my.shop.common.util.UUIDWorker;
 import com.my.shop.mapper.MqMessageConsumerLogMapper;
 import com.my.shop.pojo.MqMessageConsumerLog;
 import com.my.shop.pojo.UserBalanceLog;
@@ -92,7 +93,6 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
                         System.out.println("并发修改,稍后处理");
                     }else{
                         mqMessageConsumerLog = mqMessageConsumerLogMapper.findByParams(mqMessageConsumerLogCondition);
-                        //TODO 回退用户余额和保存用户余额日志操作
                         Integer effectUserRows = userService.unUseUserBalance(userBalanceLog);
                         if(effectUserRows.intValue() > 0){
                             System.out.println("回退用户余额成功");
@@ -110,9 +110,27 @@ public class UnConfirmOrderListener implements RocketMQListener<MessageExt> {
                     return;
                 }
             }
-
-
-
+        }else {
+            //未进行过消费的情况
+            //消费消息日志记录
+            mqMessageConsumerLog = new MqMessageConsumerLog();
+            mqMessageConsumerLog.setGroup_name(consumerGroup);
+            mqMessageConsumerLog.setMsg_tag(tags);
+            mqMessageConsumerLog.setMsg_key(keys);
+            mqMessageConsumerLog.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_PROCESSING.getCode());
+            mqMessageConsumerLog.setConsumer_times(0);
+            mqMessageConsumerLog.setMsg_body(body);
+            mqMessageConsumerLog.setId(UUIDWorker.getUUIDFormat());
+            //开始回退商品库存[真正业务],并记录商品回退日志
+            Integer unReduceNum = userService.unUseUserBalance(userBalanceLog);
+            if(unReduceNum.intValue() > 0){
+                mqMessageConsumerLog.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_SUCCESS.getCode());
+                System.out.println("用户余额回退成功");
+            }else{
+                mqMessageConsumerLog.setConsumer_status(ShopCode.SHOP_MQ_MESSAGE_STATUS_FAIL.getCode());
+                System.out.println("用户余额回退失败");
+            }
+            Integer addLogs = mqMessageConsumerLogMapper.add(mqMessageConsumerLog);
         }
 
     }
