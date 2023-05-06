@@ -2,6 +2,8 @@ package com.my.shop.mq;
 
 import com.my.shop.common.CommonResult;
 import com.my.shop.common.constant.ShopCode;
+import com.my.shop.common.exception.CastException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -25,6 +27,12 @@ public class MessageProducer {
     private RocketMQTemplate rocketMQTemplate;
 
     public CommonResult asyncSendBroadcast(String topic,String tag,String key,String body){
+        if(StringUtils.isEmpty(topic)){
+            CastException.cast(ShopCode.SHOP_MQ_TOPIC_IS_EMPTY);
+        }
+        if(StringUtils.isEmpty(body)){
+            CastException.cast(ShopCode.SHOP_MQ_MESSAGE_BODY_IS_EMPTY);
+        }
         Message message = new Message(topic,tag,key,body.getBytes());
         try {
             SendResult sendResult = rocketMQTemplate.getProducer().send(message);

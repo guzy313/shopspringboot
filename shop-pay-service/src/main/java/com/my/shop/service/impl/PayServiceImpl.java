@@ -15,6 +15,7 @@ import com.my.shop.service.PayService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,6 +43,9 @@ public class PayServiceImpl implements PayService {
 
     @Resource
     private MessageProducer messageProducer;
+
+    @Resource
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
     public CommonResult createPayment(Payment payment) {
@@ -103,20 +107,26 @@ public class PayServiceImpl implements PayService {
                 mqMessageProducerLog.setCreate_time(Timestamp.valueOf(LocalDateTime.now()));
                 //4.将消息持久化到数据库
                 Integer addLogs = mqMessageProducerLogMapper.add(mqMessageProducerLog);
-                //5.发送消息到MQ
-                CommonResult messageSendResult = messageProducer.asyncSendBroadcast(MQMessageConstant.TOPIC,
-                        MQMessageConstant.TAG_PAYMENT_SUCCESS, payment.getId().toString(), JSON.toJSONString(findPaymentById));
-                //6.等待发送结果,如果MQ成功接收到消息,则删除已经发送成功的消息
-                if(ShopCode.SHOP_MQ_MESSAGE_STATUS_SUCCESS.getCode().intValue() == messageSendResult.getCode().intValue()){
-                    System.out.println("消息发送成功");
-                    Integer deleteByPrimaryKey = mqMessageProducerLogMapper.deleteByPrimaryKey(mqMessageProducerLog.getId());
-                    //开始删除消息
-                    if(deleteByPrimaryKey > 0){
-                        System.out.println("消息日志删除成功");
+
+                //使用线程池进行优化消息发送
+                threadPoolTaskExecutor.createThread(()->{
+                    //5.发送消息到MQ
+                    CommonResult messageSendResult = messageProducer.asyncSendBroadcast(MQMessageConstant.TOPIC,
+                            MQMessageConstant.TAG_PAYMENT_SUCCESS, payment.getId().toString(), JSON.toJSONString(findPaymentById));
+                    //6.等待发送结果,如果MQ成功接收到消息,则删除已经发送成功的消息
+                    if(ShopCode.SHOP_MQ_MESSAGE_STATUS_SUCCESS.getCode().intValue() == messageSendResult.getCode().intValue()){
+                        System.out.println("消息发送成功");
+                        Integer deleteByPrimaryKey = mqMessageProducerLogMapper.deleteByPrimaryKey(mqMessageProducerLog.getId());
+                        //开始删除消息
+                        if(deleteByPrimaryKey > 0){
+                            System.out.println("消息日志删除成功");
+                        }
+                    }else{
+                        System.out.println("消息发送失败");
+                        //TODO 可以后续考虑实现消息重发 (比如定时任务查询消息发送日志表 重新进行发送)
                     }
-                }else{
-                    System.out.println("消息发送失败");
-                }
+                }).run();
+
             }else{
                 //支付失败
                 CastException.cast(ShopCode.SHOP_PAYMENT_PAY_ERROR);
