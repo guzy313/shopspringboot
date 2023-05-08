@@ -6,6 +6,7 @@ import com.my.shop.common.constant.MQMessageConstant;
 import com.my.shop.common.constant.ShopCode;
 import com.my.shop.common.exception.CastException;
 import com.my.shop.common.util.IdWorker;
+import com.my.shop.common.util.UUIDWorker;
 import com.my.shop.mapper.MqMessageProducerLogMapper;
 import com.my.shop.mapper.PaymentMapper;
 import com.my.shop.mq.MessageProducer;
@@ -61,7 +62,7 @@ public class PayServiceImpl implements PayService {
         //创建查询条件对象(查询当前订单 已支付的记录)
         Payment condition = new Payment();
         condition.setOrder_id(payment.getOrder_id());
-        condition.setIs_paid(ShopCode.SHOP_PAYMENT_IS_PAID.getCode());
+        condition.setIs_paid(ShopCode.SHOP_ORDER_PAY_STATUS_IS_PAY.getCode());
         List<Payment> paymentList = paymentMapper.findByParams(condition);
         if(paymentList.size() > 0){
             //已支付无需重新支付
@@ -98,6 +99,7 @@ public class PayServiceImpl implements PayService {
             if(effectPaymentRows > 0){
                 //3.创建支付成功消息
                 MqMessageProducerLog mqMessageProducerLog = new MqMessageProducerLog();
+                mqMessageProducerLog.setId(UUIDWorker.getUUIDFormat());
                 mqMessageProducerLog.setGroup_name(producerGroup);
                 mqMessageProducerLog.setMsg_topic(MQMessageConstant.TOPIC);
                 mqMessageProducerLog.setMsg_tag(MQMessageConstant.TAG_PAYMENT_SUCCESS);
@@ -114,7 +116,7 @@ public class PayServiceImpl implements PayService {
                     CommonResult messageSendResult = messageProducer.asyncSendBroadcast(MQMessageConstant.TOPIC,
                             MQMessageConstant.TAG_PAYMENT_SUCCESS, payment.getId().toString(), JSON.toJSONString(findPaymentById));
                     //6.等待发送结果,如果MQ成功接收到消息,则删除已经发送成功的消息
-                    if(ShopCode.SHOP_MQ_MESSAGE_STATUS_SUCCESS.getCode().intValue() == messageSendResult.getCode().intValue()){
+                    if(ShopCode.SHOP_MQ_SEND_MESSAGE_SUCCESS.getCode().intValue() == messageSendResult.getCode().intValue()){
                         System.out.println("消息发送成功");
                         Integer deleteByPrimaryKey = mqMessageProducerLogMapper.deleteByPrimaryKey(mqMessageProducerLog.getId());
                         //开始删除消息

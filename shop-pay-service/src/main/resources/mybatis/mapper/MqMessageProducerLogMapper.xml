@@ -21,7 +21,7 @@
         select * from mq_message_producer
     </select>
 
-    <select id="findById" parameterType="java.math.String" resultType="com.my.shop.pojo.MqMessageProducerLog">
+    <select id="findById" parameterType="java.lang.String" resultType="com.my.shop.pojo.MqMessageProducerLog">
         select * from mq_message_producer where id = #{id}
     </select>
 
@@ -53,7 +53,7 @@
         insert into mq_message_producer (id,group_name,msg_topic,msg_tag,msg_key,msg_body,
         msg_status,create_time)
          values (#{mqMessageProducerLog.id},#{mqMessageProducerLog.group_name},#{mqMessageProducerLog.msg_topic},#{mqMessageProducerLog.msg_tag},#{mqMessageProducerLog.msg_key},#{mqMessageProducerLog.msg_body},
-        #{mqMessageProducerLog.msg_status},#{mqMessageConsumerLog.create_time})
+        #{mqMessageProducerLog.msg_status},#{mqMessageProducerLog.create_time})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.my.shop.pojo.MqMessageProducerLog">
