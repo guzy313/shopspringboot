@@ -134,9 +134,6 @@ public class PayServiceImpl implements PayService {
                 CastException.cast(ShopCode.SHOP_PAYMENT_PAY_ERROR);
             }
         }
-
-
-
-        return null;
+        return new CommonResult(ShopCode.SHOP_PAYMENT_IS_PAID.getCode(),ShopCode.SHOP_PAYMENT_IS_PAID.getMessage());
     }
 }

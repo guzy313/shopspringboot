@@ -6,7 +6,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Gzy
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date create on 2023/5/5
  */
 @Service
-@FeignClient(value = "shopspringboot-pay-service")
+@FeignClient(value = "shopspringboot-api-service")
 public interface PayService {
 
     @PostMapping("/pay/createPayment")

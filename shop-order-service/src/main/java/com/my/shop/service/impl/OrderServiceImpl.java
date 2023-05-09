@@ -253,6 +253,10 @@ public class OrderServiceImpl implements OrderService {
     private void useCoupon(Order order){
         //优惠券校验在生成预订单的时候已经校验
         Coupon coupon = couponService.findById(order.getCoupon_id());
+        if(order.getUser_id().compareTo(coupon.getUser_id()) != 0){
+            System.out.println("优惠券不属于当前用户");
+            CastException.cast(ShopCode.SHOP_COUPON_INVALIED);
+        }
         //设置优惠券使用的订单ID
         coupon.setOrder_id(order.getId());
         //用户ID在发放优惠券时候需要指定

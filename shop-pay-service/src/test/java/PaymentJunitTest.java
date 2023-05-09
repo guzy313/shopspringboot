@@ -1,3 +1,4 @@
+import com.alibaba.fastjson.JSON;
 import com.my.shop.PayApplication;
 import com.my.shop.common.constant.ShopCode;
 import com.my.shop.pojo.Payment;
@@ -29,10 +30,11 @@ public class PaymentJunitTest {
     @Test
     public void createPayment(){
         Payment payment = new Payment();
-        payment.setOrder_id(BigInteger.valueOf(6466742020145152l));
+        payment.setOrder_id(BigInteger.valueOf(6468374011167744l));
         payment.setIs_paid(ShopCode.SHOP_ORDER_PAY_STATUS_NO_PAY.getCode());
         payment.setPay_amount(0);
-        payService.createPayment(payment);
+        System.out.println(JSON.toJSON(payment));
+//        payService.createPayment(payment);
         try {
             TimeUnit.SECONDS.sleep(100);
         } catch (InterruptedException e) {
@@ -47,11 +49,12 @@ public class PaymentJunitTest {
     @Test
     public void callbackPayment(){
         Payment payment = new Payment();
-        payment.setOrder_id(BigInteger.valueOf(6466742020145152l));
+        payment.setOrder_id(BigInteger.valueOf(6468374011167744l));
         payment.setIs_paid(ShopCode.SHOP_ORDER_PAY_STATUS_IS_PAY.getCode());
         payment.setPay_amount(0);
-        payment.setId(BigInteger.valueOf(6466744105304064l));
-        payService.callbackPayment(payment);
+        payment.setId(BigInteger.valueOf(6468384037684224l));
+//        payService.callbackPayment(payment);
+        System.out.println(JSON.toJSON(payment));
         try {
             TimeUnit.SECONDS.sleep(10000);
         } catch (InterruptedException e) {
